@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Route } from 'react-router-dom';
 import api from '../utils/Api';
 import '../pages/index.css';
 import Header from './Header';
@@ -9,6 +10,7 @@ import AddCardPopup from './AddCardPopup';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import Login from './Login';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
@@ -134,6 +136,9 @@ function App() {
       <div className="page">
         <div className="page__content">
           <Header />
+          <Route path="/signin">
+            <Login />
+          </Route>
           <Main
             //passed into Main.js
             cards={cards}
