@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PopupStyleDark(props) {
+function PopupThemeDark(props) {
 
   return (
 
@@ -17,3 +17,5 @@ function PopupStyleDark(props) {
 
   )
 }
+
+export default PopupThemeDark;

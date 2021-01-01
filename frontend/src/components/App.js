@@ -136,7 +136,10 @@ function App() {
       <div className="page">
         <div className="page__content">
           <Header />
-          <Route path="/signin">
+          <Route path="/signup">
+            <SignUp />
+          </Route>
+          <Route path="/login">
             <Login />
           </Route>
           <Main

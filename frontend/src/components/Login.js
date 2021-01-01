@@ -1,12 +1,22 @@
 import React from 'react';
-import './Login.css';
+import PopupThemeDark from './PopupThemeDark';
 
-function Login () {
+function Login (props) {
+
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    props.onUpdateLogin(
+      email,
+      password
+    );
+  }
+
   return (
-    <PopupStyleDark>
+    <PopupThemeDark name="theme-dark" title="Login" buttonText="Log in" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}>
 
 
-    </PopupStyleDark>
+    </PopupThemeDark>
   )
 }
 
