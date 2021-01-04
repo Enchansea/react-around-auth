@@ -1,5 +1,5 @@
 import React from 'react';
-import PopupThemeDark from './PopupThemeDark';
+import PopupThemeDark from './DarkForm';
 
 function Register () {
   return (

@@ -11,6 +11,7 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import Login from './Login';
+import SignUp from './SignUp';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
