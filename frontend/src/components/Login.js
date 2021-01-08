@@ -14,8 +14,8 @@ function Login (props) {
 
   return (
     <DarkForm name="theme-dark" title="Login" buttonText="Log in" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}>
-      <input className="login-name" name="username" type="email" value={username} onChange={e => setUsername(e.target.value)} placeholder="Email" required />
-      <input className="login-password" name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Email" required />
+      <input className="login__input" name="username" type="email" value={username} onChange={e => setUsername(e.target.value)} placeholder="Email" required />
+      <input className="login__input" name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required />
 
     </DarkForm>
   )

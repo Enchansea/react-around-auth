@@ -11,7 +11,8 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import Login from './Login';
-import SignUp from './SignUp';
+import Register from './Register';
+import ProtectedRoute from './ProtectedRoute';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
@@ -136,11 +137,12 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__content">
+          <ProtectedRoute exact path="/" />
           <Header />
           <Route path="/signup">
-            <SignUp />
+            <Register />
           </Route>
-          <Route path="/login">
+          <Route path="/signin">
             <Login />
           </Route>
           <Main

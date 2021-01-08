@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useHistory, withRouter } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {  useHistory } from 'react-router-dom';
 import DarkForm from './DarkForm';
-import * as aroundAuth from '../aroundAuth';
+import * as aroundAuth from '../utils/aroundAuth';
 
-function SignUp (props) {
+function Register (props) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -18,6 +18,9 @@ function SignUp (props) {
   function handleSubmit(e) {
     e.preventDefault();
 
+      if (!username || password) {
+        return;
+      }
 
     aroundAuth.register(username, password)
     .then((res) => {
@@ -32,19 +35,19 @@ function SignUp (props) {
     .catch(err => console.log(err));
   }
 
-  // useEffect(() => {
-  //   if(localStorage.getItem('jwt')) {
-  //     history.push('/main');
-  //   }
-  // }, [])
+  useEffect(() => {
+    if(localStorage.getItem('jwt')) {
+      history.push('/main');
+    }
+  }, [])
 
   return (
     <DarkForm name="theme-dark" title="signup" buttonText="Sign up" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}>
-      <input className="login-name" name="username" type="email" value={username} onChange={e => setUsername(e.target.value)} placeholder="Email" required />
-      <input className="login-password" name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Email" required />
+      <input className="login__input" name="username" type="email" value={username} onChange={e => setUsername(e.target.value)} placeholder="Email" required />
+      <input className="login__input" name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Email" required />
 
     </DarkForm>
   )
 }
 
-export default SignUp;
+export default Register;
