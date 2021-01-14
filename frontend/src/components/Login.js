@@ -1,39 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import * as aroundAuth from '../utils/aroundAuth';
 
-function Login ({setLoggedIn}) {
+function Login (props) {
 
-  const [ username, setUsername] = useState();
-  const [ password, setPassword ] = useState();
+  const [ username, setUsername] = useState('');
+  const [ password, setPassword ] = useState('');
 
   const history = useHistory();
 
-  const resetForm = () => {
-    setUsername('')
-    setPassword('')
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
     console.log(username, password);
-
-    if (!username || !password) {
-      return;
-    }
-
-    aroundAuth.authorize(username, password)
-    .then((data) => {
-      if (!data) {
-        throw new Error("Such user doesn't exist")
-      }
-      if (data.jwt) {
-        setLoggedIn(true)
-      }
-    })
-    .then(resetForm)
-    .then(() => history.push('/'))
-    .catch(err => console.log(err))
+    props.handleLogin(username, password);
   }
 
   useEffect(() => {

@@ -37,10 +37,6 @@ function App() {
 
   const history = useHistory();
 
-  handleLogin(() => {
-    setLoggedIn(true);
-  })
-
   useEffect(() => {
     api.getUserInfo()
       .then(res => {
@@ -67,7 +63,7 @@ function App() {
   useEffect(() => {
     let jwt = localStorage.getItem('jwt');
     if(jwt) {
-      aroundAuth.getContent(jwt)
+      aroundAuth.checkToken(jwt)
       .then((res) => {
         let userData = {
           username: res.username,
@@ -163,9 +159,19 @@ function App() {
     aroundAuth.authorize(email, password)
     .then((res) => {
       if (!res) {
+        console.log(res, "here!");
+        setIsSuccessful(false);
+        setIsInfoToolTipOpen(true);
+      } if (res.err) {
+        console.log(res.error);
         setIsSuccessful(false);
         setIsInfoToolTipOpen(true);
       }
+    })
+    .catch((err) => {
+      console.log(err);
+      setIsSuccessful(false);
+      setIsInfoToolTipOpen(true);
     })
   }
 
@@ -192,7 +198,7 @@ function App() {
             </Route>
             <Route path="/signin">
               <Header link="/signup" linkText={'Signup'} />
-              <Login handleLogin={setLoggedIn} />
+              <Login handleLogin={handleLogin} />
             </Route>
             <ProtectedRoute path="/" loggedIn={loggedIn} userData={userData} >
               <Header linkText={'Log Out'} onClick={onSignOut} />
@@ -249,7 +255,7 @@ function App() {
             <ImagePopup isOpen={selectedCard} onClose={closeAllPopups} title={selectedCardTitle} link={selectedCardLink} />
 
             {/*Popup Fail/Success*/}
-            <InfoToolTip valid={isSuccessful} isOpen={isInfoToolTipOpen} onClose={closeAllPopups}/>
+            <InfoToolTip name="info-section" valid={isSuccessful} isOpen={isInfoToolTipOpen} onClose={closeAllPopups}/>
 
 
     </CurrentUserContext.Provider>
