@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {  useHistory } from 'react-router-dom';
-import DarkForm from './DarkForm';
+import {  useHistory, Link } from 'react-router-dom';
 import * as aroundAuth from '../utils/aroundAuth';
 
 function Register (props) {
@@ -37,16 +36,22 @@ function Register (props) {
 
   useEffect(() => {
     if(localStorage.getItem('jwt')) {
-      history.push('/main');
+      history.push('/');
     }
-  }, [])
+  }, [history])
 
   return (
-    <DarkForm name="theme-dark" title="signup" buttonText="Sign up" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}>
+    <div>
+    <form action="#" className="login" onSubmit={handleSubmit}>
+      <h3 className="login__title">Sign Up</h3>
       <input className="login__input" name="username" type="email" value={username} onChange={e => setUsername(e.target.value)} placeholder="Email" required />
-      <input className="login__input" name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Email" required />
-
-    </DarkForm>
+      <input className="login__input" name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required />
+      <button type="submit" className="login__button">Sign Up</button>
+      <div>
+        <Link to="signin" className="login__note">Already a member? Sign in here!</Link>
+      </div>
+    </form>
+  </div>
   )
 }
 

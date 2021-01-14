@@ -1,7 +1,7 @@
 export const BASE_URL = "https://register.nomoreparties.co";
 
 export const register = ( email, password ) => {
-    return fetch('${BASE_URL}/signup', {
+    return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -17,13 +17,14 @@ export const register = ( email, password ) => {
     .catch((err) => console.log(err));
 };
 
-export const authorize = (identifier, password) => {
+export const authorize = (email, password) => {
     return fetch(`${BASE_URL}/signin`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ identifier, password })
+        body: JSON.stringify({ email, password })
     })
     .then((response => response.json()))
     .then((data) => {
@@ -38,7 +39,7 @@ export const authorize = (identifier, password) => {
 }
 
 export const getContent = (token) => {
-    return fetch('${BASE_URL}/users/me', {
+    return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

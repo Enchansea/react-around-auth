@@ -1,6 +1,10 @@
 @import url('./__logo/header__logo.css');
+@import url('./__nav/header__nav.css');
 
 .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   margin: 0 auto;
   padding-top: 45px;
   padding-bottom: 41px;
