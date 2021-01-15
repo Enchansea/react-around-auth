@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {  useHistory, Link } from 'react-router-dom';
-import * as aroundAuth from '../utils/aroundAuth';
 
 function Register (props) {
 
@@ -9,29 +8,11 @@ function Register (props) {
 
   const history = useHistory();
 
-  const resetForm = () => {
-    setUsername('')
-    setPassword('')
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(username, password);
+    props.handleSignup(username, password);
 
-      if (!username || password) {
-        return;
-      }
-
-    aroundAuth.register(username, password)
-    .then((res) => {
-      if (!res || res.statusCode === 400)
-        throw new Error('Error!!!');
-      return res;
-    })
-    .then(resetForm)
-    .then(() => {
-      history.push('/login');
-    })
-    .catch(err => console.log(err));
   }
 
   useEffect(() => {

@@ -8,7 +8,6 @@ function Login (props) {
 
   const history = useHistory();
 
-
   function handleSubmit(e) {
     e.preventDefault();
     console.log(username, password);

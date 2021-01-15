@@ -64,15 +64,7 @@ function App() {
     let jwt = localStorage.getItem('jwt');
     if(jwt) {
       aroundAuth.checkToken(jwt)
-      .then((res) => {
-        let userData = {
-          username: res.username,
-          email: res.email
-        }
-        setLoggedIn(true);
-        setUserData(userData)
-        history.push("/");
-      });
+
     }
   }, [history, loggedIn])
 
@@ -155,11 +147,24 @@ function App() {
       .catch(err => console.log(err));
   }
 
+  function handleSignup(email, password) {
+    aroundAuth.register(email, password)
+    .then((res) => {
+      if (res.err || !res) {
+        setIsSuccessful(false);
+        setIsInfoToolTipOpen(true);
+      } else {
+        setIsSuccessful(true);
+        setIsInfoToolTipOpen(true);
+        history.push('/signin');
+      }
+    })
+  }
+
   function handleLogin(email, password) {
     aroundAuth.authorize(email, password)
     .then((res) => {
       if (!res) {
-        console.log(res, "here!");
         setIsSuccessful(false);
         setIsInfoToolTipOpen(true);
       } if (res.err) {
@@ -194,7 +199,7 @@ function App() {
           <Switch>
             <Route path="/signup">
               <Header link="/signin" linkText={'Login'} />
-              <Register />
+              <Register handleSignup={handleSignup} />
             </Route>
             <Route path="/signin">
               <Header link="/signup" linkText={'Signup'} />
