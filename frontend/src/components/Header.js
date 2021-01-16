@@ -7,6 +7,7 @@ function Header(props) {
     <header className="header">
       <img src={aroundtheus} alt="Around the U.S. logo" className="header__logo" />
       <div>
+        <p className="header__user">{props.email}</p>
         <Link to={props.link} className="header__nav"><span onClick={props.onClick}>{props.linkText}</span></Link>
       </div>
     </header>

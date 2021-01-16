@@ -37,10 +37,11 @@ export const checkToken = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         }
     })
     .then(res => res.ok ? res.json() : Promise.reject('Error' + res.statusText))
-    .then((data) => data);
+    .then((res) => {return res});
 }

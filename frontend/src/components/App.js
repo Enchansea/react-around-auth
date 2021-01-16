@@ -3,7 +3,7 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import api from '../utils/Api';
 import '../pages/index.css';
 import Header from './Header';
-import Main from './Main.js';
+import Main from './Main';
 import Footer from './Footer';
 //import DeletePopup from './DeletePopup';
 import AddCardPopup from './AddCardPopup';
@@ -31,9 +31,11 @@ function App() {
   //const [isDeleteOpen, setDeletePopupOpen] = useState(false);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState(false);
+  const [userEmail, setUserEmail] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
   const [isSuccessful, setIsSuccessful] = useState(false);
+  const [token, setToken] = useState("");
+
 
   const history = useHistory();
 
@@ -64,13 +66,20 @@ function App() {
     let jwt = localStorage.getItem('jwt');
     if(jwt) {
       aroundAuth.checkToken(jwt)
+      .then((res) => {
+        console.log(res, "Res!")
+        setLoggedIn(true);
+        setUserEmail(res.email);
+        history.push("/");
+      })
 
     }
-  }, [history, loggedIn])
+  }, [history, token])
 
   const onSignOut = () => {
     localStorage.removeItem('jwt');
     setLoggedIn(false);
+    setUserEmail('');
     history.push('/signin');
   }
 
@@ -172,12 +181,29 @@ function App() {
         setIsSuccessful(false);
         setIsInfoToolTipOpen(true);
       }
+      handleTokenCheck()
     })
     .catch((err) => {
       console.log(err);
       setIsSuccessful(false);
       setIsInfoToolTipOpen(true);
     })
+  }
+
+  function handleTokenCheck() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      aroundAuth.checkToken(jwt)
+      .then((res) => {
+        if (res.err) {
+          console.log('Error!');
+        }
+        setCurrentUser(res);
+        setUserEmail(res.email);
+        setLoggedIn(true);
+        setToken(jwt)
+      })
+    }
   }
 
   function closeAllPopups(evt) {
@@ -205,25 +231,25 @@ function App() {
               <Header link="/signup" linkText={'Signup'} />
               <Login handleLogin={handleLogin} />
             </Route>
-            <ProtectedRoute path="/" loggedIn={loggedIn} userData={userData} >
-              <Header linkText={'Log Out'} onClick={onSignOut} />
-              <Main
-                //passed into Main.js
-                cards={cards}
-                onEditAvatar={handleAvatarClick}
-                onEditProfile={handleProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onCardClick={(data) => { handleCardClick(data) }}
-                handleCardClick={handleCardClick}
-                //onDeleteClick={(data) => { handleDeleteClick(data) }}
-                //handleDeleteClick={handleDeleteClick}
-                onCardDelete={(card) => { handleCardDelete(card) }}
-                handleCardDelete={handleCardDelete}
-                onCardLike={(card) => { handleCardLike(card) }}
-                handleCardLike={handleCardLike}
-                onClose={closeAllPopups}
-              />
-            </ProtectedRoute>
+            <ProtectedRoute path="/"
+              loggedIn={loggedIn}
+              signOut={onSignOut}
+              component={Main}
+              userEmail={userEmail}
+              cards={cards}
+              onEditAvatar={handleAvatarClick}
+              onEditProfile={handleProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onCardClick={(data) => { handleCardClick(data) }}
+              handleCardClick={handleCardClick}
+              //onDeleteClick={(data) => { handleDeleteClick(data) }}
+              //handleDeleteClick={handleDeleteClick}
+              onCardDelete={(card) => { handleCardDelete(card) }}
+              handleCardDelete={handleCardDelete}
+              onCardLike={(card) => { handleCardLike(card) }}
+              handleCardLike={handleCardLike}
+              onClose={closeAllPopups}
+               />
           </Switch>
           <Footer />
         </div>
