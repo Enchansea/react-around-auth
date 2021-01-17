@@ -69,7 +69,7 @@ function App() {
       .then((res) => {
         console.log(res, "Res!")
         setLoggedIn(true);
-        setUserEmail(res.email);
+        setUserEmail(res.data.email);
         history.push("/");
       })
 
@@ -199,7 +199,7 @@ function App() {
           console.log('Error!');
         }
         setCurrentUser(res);
-        setUserEmail(res.email);
+        setUserEmail(res.data.email);
         setLoggedIn(true);
         setToken(jwt)
       })
