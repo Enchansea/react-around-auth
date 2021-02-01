@@ -5,7 +5,6 @@ import '../pages/index.css';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-//import DeletePopup from './DeletePopup';
 import AddCardPopup from './AddCardPopup';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
@@ -62,19 +61,27 @@ function App() {
 
   }, [])
 
-  useEffect(() => {
-    let jwt = localStorage.getItem('jwt');
-    if(jwt) {
+  function handleTokenCheck() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
       aroundAuth.checkToken(jwt)
       .then((res) => {
-        console.log(res, "Res!")
+        if (res.err) {
+          console.log('Error!');
+        }
         setLoggedIn(true);
         setUserEmail(res.data.email);
-        history.push("/");
+        setToken(jwt);
       })
-
+      .catch(err => console.log(err))
     }
+  }
+
+  useEffect(() => {
+    handleTokenCheck();
+    history.push("/");
   }, [history, token])
+
 
   const onSignOut = () => {
     localStorage.removeItem('jwt');
@@ -97,11 +104,6 @@ function App() {
     setSelectedCardTitle(title);
     setSelectedImageOpen(true);
   }
-
-
-  // function handleDeleteClick() {
-  //   setDeletePopupOpen(true);
-  // }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -168,6 +170,7 @@ function App() {
         history.push('/signin');
       }
     })
+    .catch(err => console.log(err))
   }
 
   function handleLogin(email, password) {
@@ -190,22 +193,6 @@ function App() {
     })
   }
 
-  function handleTokenCheck() {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      aroundAuth.checkToken(jwt)
-      .then((res) => {
-        if (res.err) {
-          console.log('Error!');
-        }
-        setCurrentUser(res);
-        setUserEmail(res.data.email);
-        setLoggedIn(true);
-        setToken(jwt)
-      })
-    }
-  }
-
   function closeAllPopups(evt) {
     if (evt.target !== evt.currentTarget) return
     setIsEditAvatarOpen(false);
@@ -213,7 +200,6 @@ function App() {
     setIsAddPlaceOpen(false);
     setSelectedImageOpen(false);
     setIsInfoToolTipOpen(false);
-    //setDeletePopupOpen(false);
   }
 
 
@@ -242,8 +228,6 @@ function App() {
               onAddPlace={handleAddPlaceClick}
               onCardClick={(data) => { handleCardClick(data) }}
               handleCardClick={handleCardClick}
-              //onDeleteClick={(data) => { handleDeleteClick(data) }}
-              //handleDeleteClick={handleDeleteClick}
               onCardDelete={(card) => { handleCardDelete(card) }}
               handleCardDelete={handleCardDelete}
               onCardLike={(card) => { handleCardLike(card) }}
@@ -273,14 +257,6 @@ function App() {
               isOpen={isAddPlaceOpen}
               onClose={closeAllPopups}
               onUpdateAddCard={handleAddPlace} />
-
-            {/*Delete popup*/}
-
-            {/* <DeletePopup
-            isOpen={isDeleteOpen}
-            onClose={closeAllPopups}
-            onCardDelete={handleCardDelete}
-          /> */}
 
             {/*Image popup*/}
             <ImagePopup isOpen={selectedCard} onClose={closeAllPopups} title={selectedCardTitle} link={selectedCardLink} />

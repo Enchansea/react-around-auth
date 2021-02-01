@@ -7,7 +7,6 @@ function DeletePopup(props) {
   function handleSubmit(e) {
     e.preventDefault();
     props.onCardDelete(props.card)
-    //console.log("props", props.card)
   }
 
   return (
